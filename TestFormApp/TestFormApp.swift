@@ -10,9 +10,8 @@ import SwiftData
 
 @main
 struct TestFormApp: App {
-    // Managers
+    // Template manager
     @StateObject private var templateManager = FormTemplateManager()
-    @StateObject private var firebaseManager = FirebaseManager.shared
 
     // SwiftData model container
     let modelContainer: ModelContainer
@@ -38,7 +37,6 @@ struct TestFormApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(templateManager)
-                .environmentObject(firebaseManager)
                 .environmentObject(createDataManager())
                 .modelContainer(modelContainer)
         }

@@ -10,7 +10,6 @@ import SwiftUI
 struct CategoryListView: View {
     @EnvironmentObject var templateManager: FormTemplateManager
     @EnvironmentObject var dataManager: FilledFormDataManager
-    @EnvironmentObject var firebaseManager: FirebaseManager
 
     private let categoryIcons: [String: String] = [
         "UPS": "bolt.fill",
@@ -42,56 +41,16 @@ struct CategoryListView: View {
 
     private var categoryList: some View {
         List {
-            // Shared Documents Section
-            Section {
+            ForEach(templateManager.categoryNames, id: \.self) { category in
                 NavigationLink {
-                    SharedDocumentsView()
+                    TestLevelListView(category: category)
                 } label: {
-                    HStack {
-                        Image(systemName: "cloud.fill")
-                            .font(.title2)
-                            .foregroundStyle(.blue)
-                            .frame(width: 40)
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Onaylı Dökümanlar")
-                                .font(.headline)
-
-                            Text("Tüm onaylanmış testleri görüntüle")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-
-                        Spacer()
-
-                        if firebaseManager.isAuthenticated {
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundStyle(.green)
-                        }
-
-                        Image(systemName: "chevron.right")
-                            .font(.caption)
-                            .foregroundStyle(.tertiary)
-                    }
-                    .padding(.vertical, 4)
+                    CategoryRow(
+                        category: category,
+                        icon: categoryIcons[category] ?? "folder.fill",
+                        formCount: templateManager.getTemplates(forCategory: category).count
+                    )
                 }
-            }
-
-            // Categories Section
-            Section {
-                ForEach(templateManager.categoryNames, id: \.self) { category in
-                    NavigationLink {
-                        TestLevelListView(category: category)
-                    } label: {
-                        CategoryRow(
-                            category: category,
-                            icon: categoryIcons[category] ?? "folder.fill",
-                            formCount: templateManager.getTemplates(forCategory: category).count
-                        )
-                    }
-                }
-            } header: {
-                Text("Test Kategorileri")
             }
         }
     }

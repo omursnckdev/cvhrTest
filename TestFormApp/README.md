@@ -19,11 +19,6 @@ Profesyonel iOS test ve kalite kontrol formu uygulaması. Elektrik panoları, tr
 ✅ **PDF Export**: Profesyonel PDF raporları
 ✅ **İlerleme Takibi**: Tamamlanma yüzdesi
 ✅ **Auto-Save**: SwiftData ile otomatik kaydetme
-✅ **Firebase Integration**: 🆕
-  - Cloud Storage ile döküman paylaşımı
-  - Firestore ile metadata yönetimi
-  - Email/password ve anonymous authentication
-  - Tüm kullanıcılar onaylı dökümanlara erişebilir
 ✅ **Dark Mode**: Tam dark mode desteği
 
 ## Teknolojiler
@@ -34,7 +29,6 @@ Profesyonel iOS test ve kalite kontrol formu uygulaması. Elektrik panoları, tr
 - **Persistence**: SwiftData (iCloud sync capable)
 - **PDF**: UIGraphicsPDFRenderer, PDFKit
 - **Signature**: PencilKit
-- **Firebase**: Authentication, Firestore, Cloud Storage
 
 ## Xcode'da Proje Kurulumu
 
@@ -126,70 +120,11 @@ Bu repository'deki dosyaları Xcode projenize kopyalayın:
 3. **IMPORTANT**: "Copy items if needed" işaretli olsun
 4. **Target Membership**: `TestFormApp` işaretli olmalı
 
-### Adım 5: Firebase Entegrasyonu (Opsiyonel ama Önerilen)
-
-Firebase ile döküman paylaşım özelliklerini aktifleştirmek için:
-
-1. **[FIREBASE_SETUP.md](FIREBASE_SETUP.md) dosyasını okuyun** - Detaylı kurulum talimatları
-2. Firebase SDK paketlerini ekleyin (Swift Package Manager)
-3. `GoogleService-Info.plist` dosyasını Firebase Console'dan indirin
-4. Firebase Authentication, Firestore ve Storage'ı etkinleştirin
-
-**Firebase olmadan da uygulama çalışır**, ancak:
-- ❌ Döküman onaylama ve paylaşma özellikleri çalışmaz
-- ❌ "Onaylı Dökümanlar" bölümü kullanılamaz
-- ✅ Lokal form oluşturma, düzenleme ve PDF export çalışır
-
-### Adım 6: Build ve Çalıştırma
+### Adım 5: Build ve Çalıştırma
 
 1. Simulator veya gerçek device seçin (iOS 17+)
 2. **Product → Build** (⌘B)
 3. **Product → Run** (⌘R)
-
-## Firebase Integration (YENİ! 🔥)
-
-### Özellikler
-
-- **Döküman Onaylama**: Tamamlanmış formlar onaylanıp buluta yüklenir
-- **Merkezi Depolama**: Tüm onaylı dökümanlar Firebase Cloud Storage'da
-- **Paylaşımlı Erişim**: Tüm kullanıcılar onaylı dökümanlara erişebilir
-- **Metadata Yönetimi**: Firestore ile döküman bilgileri saklanır
-- **Authentication**: Email/password ve anonymous login desteği
-
-### Kurulum
-
-Detaylı kurulum için **[FIREBASE_SETUP.md](FIREBASE_SETUP.md)** dosyasına bakın.
-
-Hızlı özet:
-1. Firebase Console'da proje oluşturun
-2. iOS uygulaması ekleyin ve `GoogleService-Info.plist` indirin
-3. Firebase SDK paketlerini Xcode'a ekleyin:
-   ```
-   https://github.com/firebase/firebase-ios-sdk
-   ```
-   - FirebaseAuth
-   - FirebaseFirestore
-   - FirebaseStorage
-4. Authentication, Firestore ve Storage'ı etkinleştirin
-5. Security rules'ları yapılandırın
-
-### Kullanım
-
-1. **Giriş Yapma**:
-   - Ana ekranda "Onaylı Dökümanlar" → "Giriş Yap"
-   - Email/password ile kayıt olun veya anonim giriş yapın
-
-2. **Döküman Onaylama**:
-   - Formu %100 tamamlayın
-   - Menü (⋯) → "Onayla ve Yükle"
-   - Döküman bilgilerini gözden geçirin
-   - "Onayla ve Yükle" butonuna tıklayın
-
-3. **Paylaşılan Dökümanları Görüntüleme**:
-   - "Onaylı Dökümanlar" bölümüne gidin
-   - Kategoriye göre filtreleyin
-   - Dökümana tıklayarak PDF'i görüntüleyin
-   - Paylaş butonuyla başkalarıyla paylaşın
 
 ## JSON Template Yapısı
 

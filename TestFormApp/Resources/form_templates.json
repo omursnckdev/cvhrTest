@@ -1,0 +1,477 @@
+[
+  {
+    "formId": "ups_l2",
+    "category": "UPS",
+    "level": "L2",
+    "title": "UPS Panosu L2 Seviye Test Raporu",
+    "sections": [
+      {
+        "id": "equipment_info",
+        "title": "Ekipman Bilgileri",
+        "type": "info",
+        "fields": [
+          {
+            "id": "form_name",
+            "label": "Form Adı",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "equipment_name",
+            "label": "Ekipman Adı",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "equipment_type",
+            "label": "Ekipman Tipi",
+            "type": "text",
+            "defaultValue": "UPS Panosu"
+          },
+          {
+            "id": "equipment_number",
+            "label": "Ekipman No",
+            "type": "text"
+          },
+          {
+            "id": "serial_number",
+            "label": "Seri No",
+            "type": "text"
+          },
+          {
+            "id": "power_capacity",
+            "label": "Güç - Kapasite",
+            "type": "text"
+          },
+          {
+            "id": "manufacturer",
+            "label": "Üretici Firma",
+            "type": "text"
+          },
+          {
+            "id": "location",
+            "label": "Mahal / Lokasyon",
+            "type": "text"
+          },
+          {
+            "id": "test_date",
+            "label": "Test Tarihi",
+            "type": "date",
+            "required": true
+          }
+        ]
+      },
+      {
+        "id": "startup_conditions",
+        "title": "Başlangıç Koşulları",
+        "type": "checklist",
+        "items": [
+          {
+            "number": 1,
+            "description": "Saha uygulama projeleri onaylanmış ve sahada mevcuttur.",
+            "controlMethod": "Gözle Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 2,
+            "description": "İş yapım yöntemi (İYY) hazırlanmış ve onaylanmıştır.",
+            "controlMethod": "Gözle Kontrol",
+            "dependencies": [
+              {
+                "type": "requires_yes",
+                "targetItemNumbers": [1],
+                "message": "Önce 1. madde (Saha uygulama projeleri) onaylanmalıdır",
+                "severity": "error"
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "description": "Risk analizi yapılmış ve gerekli önlemler alınmıştır.",
+            "controlMethod": "Gözle Kontrol",
+            "dependencies": [
+              {
+                "type": "requires_yes",
+                "targetItemNumbers": [2],
+                "message": "Önce 2. madde (İYY) onaylanmalıdır",
+                "severity": "error"
+              }
+            ]
+          },
+          {
+            "number": 4,
+            "description": "Çalışma izin formu (ÇİF) düzenlenmiş ve onaylanmıştır.",
+            "controlMethod": "Gözle Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 5,
+            "description": "Test ekipmanları kalibrasyonları geçerlidir.",
+            "controlMethod": "Kalibrasyon Sertifikası",
+            "dependencies": []
+          },
+          {
+            "number": 6,
+            "description": "Sahada çalışacak personel eğitimlerini tamamlamıştır.",
+            "controlMethod": "Eğitim Kayıtları",
+            "dependencies": []
+          },
+          {
+            "number": 7,
+            "description": "Kişisel koruyucu donanımlar (KKD) eksiksiz mevcuttur.",
+            "controlMethod": "Gözle Kontrol",
+            "dependencies": [
+              {
+                "type": "requires_yes",
+                "targetItemNumbers": [6],
+                "message": "Personel eğitimleri tamamlanmadan KKD kontrolü yapılmamalıdır",
+                "severity": "warning"
+              }
+            ]
+          },
+          {
+            "number": 8,
+            "description": "Yangın söndürme ekipmanları uygun yerlere konumlandırılmıştır.",
+            "controlMethod": "Gözle Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 9,
+            "description": "Acil durum prosedürleri tüm ekip tarafından bilinmektedir.",
+            "controlMethod": "Sözlü Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 10,
+            "description": "Çalışma alanı uyarı levhaları ve barikatlı olarak güvenli hale getirilmiştir.",
+            "controlMethod": "Gözle Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 11,
+            "description": "İlgili bölümlere (operasyon, güvenlik, bakım) bilgilendirme yapılmıştır.",
+            "controlMethod": "E-posta / Yazışma",
+            "dependencies": []
+          }
+        ]
+      },
+      {
+        "id": "preliminary_tests",
+        "title": "Öncül Testler",
+        "type": "checklist",
+        "items": [
+          {
+            "number": 1,
+            "description": "UPS giriş besleme kaynağı gerilimleri ölçülmüş ve nominal değerlerde olduğu teyit edilmiştir.",
+            "controlMethod": "Multimetre Ölçümü",
+            "dependencies": [
+              {
+                "type": "requires_all_yes",
+                "targetItemNumbers": [1, 2, 3, 4],
+                "message": "Tüm başlangıç koşulları (1-4) sağlanmadan testlere başlanamaz",
+                "severity": "error"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "description": "UPS akü bankaları şarj seviyeleri kontrol edilmiş ve %100 şarjlı olduğu doğrulanmıştır.",
+            "controlMethod": "UPS Panel Okuma / Multimetre",
+            "dependencies": [
+              {
+                "type": "requires_yes",
+                "targetItemNumbers": [1],
+                "message": "Önce giriş besleme kontrolü yapılmalıdır",
+                "severity": "error"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "determinations",
+        "title": "Tespitler ve Kontroller",
+        "type": "checklist",
+        "items": [
+          {
+            "number": 1,
+            "description": "Ekipman montajı projeye uygun olarak yapılmıştır.",
+            "controlMethod": "Gözle Kontrol / Proje Karşılaştırması",
+            "dependencies": []
+          },
+          {
+            "number": 2,
+            "description": "UPS panosu zemin seviyesine göre düzgün konumlandırılmıştır.",
+            "controlMethod": "Su Terazisi / Gözle Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 3,
+            "description": "Pano dolap sacları, kapakları ve aksesuarları hasarsız ve eksiksizdir.",
+            "controlMethod": "Gözle Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 4,
+            "description": "Pano topraklama bağlantıları yapılmış ve bağlantı direnci ölçülmüştür (<1Ω).",
+            "controlMethod": "Toprak Direnci Ölçer",
+            "dependencies": []
+          },
+          {
+            "number": 5,
+            "description": "Tüm kablo bağlantıları uygun tork değerlerinde sıkılmıştır.",
+            "controlMethod": "Tork Anahtarı",
+            "dependencies": []
+          },
+          {
+            "number": 6,
+            "description": "Kablo etiketlemeleri projeye uygun ve okunabilir şekilde yapılmıştır.",
+            "controlMethod": "Gözle Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 7,
+            "description": "Giriş şalter ve koruma elemanları nominal değerlerde ve sağlamdır.",
+            "controlMethod": "Gözle Kontrol / Etiket Okuma",
+            "dependencies": []
+          },
+          {
+            "number": 8,
+            "description": "Çıkış şalter ve koruma elemanları nominal değerlerde ve sağlamdır.",
+            "controlMethod": "Gözle Kontrol / Etiket Okuma",
+            "dependencies": []
+          },
+          {
+            "number": 9,
+            "description": "Bypass şalter ve koruma elemanları nominal değerlerde ve sağlamdır.",
+            "controlMethod": "Gözle Kontrol / Etiket Okuma",
+            "dependencies": []
+          },
+          {
+            "number": 10,
+            "description": "UPS ana ünitesi montajı sağlam ve emniyetlidir.",
+            "controlMethod": "Gözle Kontrol / Manuel Test",
+            "dependencies": []
+          },
+          {
+            "number": 11,
+            "description": "Akü bankaları projeye uygun şekilde bağlanmış ve sabitlenmiştir.",
+            "controlMethod": "Gözle Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 12,
+            "description": "Akü kutup bağlantıları temiz, sağlam ve uygun torkta sıkılmıştır.",
+            "controlMethod": "Tork Anahtarı / Gözle Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 13,
+            "description": "Soğutma fanları temiz, hasar görmemiş ve dönüşleri serbesttir.",
+            "controlMethod": "Gözle Kontrol / Manuel Test",
+            "dependencies": []
+          },
+          {
+            "number": 14,
+            "description": "İç pano kablolama düzenli ve imalat standartlarına uygundur.",
+            "controlMethod": "Gözle Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 15,
+            "description": "Tüm vida bağlantıları kontrol edilmiş ve sıkılmıştır.",
+            "controlMethod": "Tornavida / Manuel Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 16,
+            "description": "Pano içi temizliği yapılmış, yabancı malzeme bulunmamaktadır.",
+            "controlMethod": "Gözle Kontrol",
+            "dependencies": []
+          },
+          {
+            "number": 17,
+            "description": "UPS LCD ekran ve kumanda paneli çalışır durumda ve eksiksizdir.",
+            "controlMethod": "Enerji Verilerek Test",
+            "dependencies": [
+              {
+                "type": "requires_all_yes",
+                "targetItemNumbers": [1, 2, 3, 4, 5],
+                "message": "Mekanik ve bağlantı kontrolleri tamamlanmadan enerji verilmemelidir",
+                "severity": "error"
+              }
+            ]
+          },
+          {
+            "number": 18,
+            "description": "Sinyal ve haberleşme kabloları uygun şekilde bağlanmıştır.",
+            "controlMethod": "Gözle Kontrol / Devamlılık Testi",
+            "dependencies": []
+          },
+          {
+            "number": 19,
+            "description": "Acil durum kapatma (EPO) düğmesi test edilmiş ve çalışmaktadır.",
+            "controlMethod": "Fonksiyon Testi",
+            "dependencies": [
+              {
+                "type": "requires_yes",
+                "targetItemNumbers": [17],
+                "message": "UPS ekranı çalışmadan EPO testi yapılamaz",
+                "severity": "error"
+              }
+            ]
+          },
+          {
+            "number": 20,
+            "description": "Alarm ve uyarı sistemleri test edilmiş ve çalışmaktadır.",
+            "controlMethod": "Fonksiyon Testi",
+            "dependencies": []
+          },
+          {
+            "number": 21,
+            "description": "UPS giriş gerilimi, akımı ve frekansı nominal aralıkta ölçülmüştür.",
+            "controlMethod": "Güç Analizörü",
+            "dependencies": [
+              {
+                "type": "requires_yes",
+                "targetItemNumbers": [17],
+                "message": "Sistem enerjisiz iken bu test yapılamaz",
+                "severity": "error"
+              }
+            ]
+          },
+          {
+            "number": 22,
+            "description": "UPS çıkış gerilimi, akımı ve frekansı nominal aralıkta ölçülmüştür.",
+            "controlMethod": "Güç Analizörü",
+            "dependencies": [
+              {
+                "type": "requires_yes",
+                "targetItemNumbers": [21],
+                "message": "Önce giriş değerleri kontrol edilmelidir",
+                "severity": "warning"
+              }
+            ]
+          },
+          {
+            "number": 23,
+            "description": "Bypass hattı gerilimi, akımı ve frekansı nominal aralıkta ölçülmüştür.",
+            "controlMethod": "Güç Analizörü",
+            "dependencies": []
+          },
+          {
+            "number": 24,
+            "description": "Normal mod çalışması test edilmiş ve sorunsuz çalışmaktadır.",
+            "controlMethod": "Operasyon Testi",
+            "dependencies": [
+              {
+                "type": "requires_all_yes",
+                "targetItemNumbers": [21, 22],
+                "message": "Giriş ve çıkış değerleri doğrulanmadan mod testi yapılmamalıdır",
+                "severity": "error"
+              }
+            ]
+          },
+          {
+            "number": 25,
+            "description": "Akü moduna geçiş test edilmiş ve sorunsuz çalışmaktadır.",
+            "controlMethod": "Operasyon Testi",
+            "dependencies": [
+              {
+                "type": "requires_yes",
+                "targetItemNumbers": [24],
+                "message": "Normal mod çalışmadan akü moduna geçiş test edilemez",
+                "severity": "error"
+              }
+            ]
+          },
+          {
+            "number": 26,
+            "description": "Bypass moduna geçiş test edilmiş ve sorunsuz çalışmaktadır.",
+            "controlMethod": "Operasyon Testi",
+            "dependencies": [
+              {
+                "type": "requires_yes",
+                "targetItemNumbers": [24],
+                "message": "Normal mod çalışmadan bypass moduna geçiş test edilemez",
+                "severity": "error"
+              }
+            ]
+          },
+          {
+            "number": 27,
+            "description": "Akü otomatik şarj fonksiyonu test edilmiş ve çalışmaktadır.",
+            "controlMethod": "Operasyon Testi / Panel Okuma",
+            "dependencies": [
+              {
+                "type": "requires_yes",
+                "targetItemNumbers": [25],
+                "message": "Akü modu test edilmeden şarj testi yapılamaz",
+                "severity": "warning"
+              }
+            ]
+          },
+          {
+            "number": 28,
+            "description": "Overload (aşırı yük) koruması test edilmiş ve çalışmaktadır.",
+            "controlMethod": "Yük Bankası ile Test",
+            "dependencies": []
+          },
+          {
+            "number": 29,
+            "description": "Tüm modlar arasında geçişler kesintisiz olarak gerçekleşmektedir.",
+            "controlMethod": "Transfer Süre Ölçümü",
+            "dependencies": [
+              {
+                "type": "requires_all_yes",
+                "targetItemNumbers": [24, 25, 26],
+                "message": "Tüm mod testleri tamamlanmadan transfer testi yapılamaz",
+                "severity": "error"
+              }
+            ]
+          },
+          {
+            "number": 30,
+            "description": "UPS verimliliği ölçülmüş ve teknik şartname değerlerini karşılamaktadır.",
+            "controlMethod": "Güç Analizörü",
+            "dependencies": []
+          },
+          {
+            "number": 31,
+            "description": "Tüm testler tamamlanmış, ekipman devreye hazır hale getirilmiştir.",
+            "controlMethod": "Genel Değerlendirme",
+            "dependencies": [
+              {
+                "type": "requires_all_yes",
+                "targetItemNumbers": [24, 25, 26, 29],
+                "message": "Tüm operasyon testleri başarılı olmalıdır",
+                "severity": "error"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "issues",
+        "title": "Problem Kayıtları",
+        "type": "issue_log",
+        "maxItems": 10
+      },
+      {
+        "id": "notes",
+        "title": "Notlar ve Açıklamalar",
+        "type": "notes"
+      },
+      {
+        "id": "attendees",
+        "title": "Katılımcılar ve İmzalar",
+        "type": "attendees",
+        "companies": [
+          "CEVAHİR YAPI",
+          "HILL INTERNATIONAL",
+          "TURKCELL"
+        ]
+      }
+    ]
+  }
+]

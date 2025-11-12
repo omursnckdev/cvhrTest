@@ -21,6 +21,12 @@ final class FilledForm {
     var notesData: Data // JSON encoded [String]
     var attendeesData: Data // JSON encoded [Attendee]
 
+    // Approval and Firebase fields
+    var isApproved: Bool
+    var approvedDate: Date?
+    var approvedBy: String?
+    var firebaseDocumentURL: String?
+
     init(
         id: UUID = UUID(),
         templateId: String,
@@ -30,12 +36,20 @@ final class FilledForm {
         checklistResponses: [String: ChecklistResponse] = [:],
         issues: [IssueLog] = [],
         notes: [String] = [],
-        attendees: [Attendee] = []
+        attendees: [Attendee] = [],
+        isApproved: Bool = false,
+        approvedDate: Date? = nil,
+        approvedBy: String? = nil,
+        firebaseDocumentURL: String? = nil
     ) {
         self.id = id
         self.templateId = templateId
         self.createdDate = createdDate
         self.lastModified = lastModified
+        self.isApproved = isApproved
+        self.approvedDate = approvedDate
+        self.approvedBy = approvedBy
+        self.firebaseDocumentURL = firebaseDocumentURL
 
         // Encode initial data
         self.equipmentInfoData = (try? JSONEncoder().encode(equipmentInfo)) ?? Data()

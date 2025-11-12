@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DynamicFormView: View {
     @EnvironmentObject var dataManager: FilledFormDataManager
+    @EnvironmentObject var firebaseManager: FirebaseManager
 
     let form: FilledForm
     let template: FormTemplate
@@ -17,6 +18,7 @@ struct DynamicFormView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showingSaveAlert = false
     @State private var showingExportSheet = false
+    @State private var showingApprovalView = false
     @State private var pdfData: Data?
 
     private var completionPercentage: Double {
@@ -87,6 +89,19 @@ struct DynamicFormView: View {
                     } label: {
                         Label("PDF Oluştur", systemImage: "doc.text")
                     }
+
+                    Divider()
+
+                    if form.isApproved {
+                        Label("Onaylandı", systemImage: "checkmark.seal.fill")
+                            .foregroundStyle(.green)
+                    } else {
+                        Button {
+                            approveDocument()
+                        } label: {
+                            Label("Onayla ve Yükle", systemImage: "checkmark.seal.fill")
+                        }
+                    }
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
@@ -102,6 +117,11 @@ struct DynamicFormView: View {
         .sheet(isPresented: $showingExportSheet) {
             if let pdfData = pdfData {
                 PDFPreviewView(pdfData: pdfData, filename: "\(template.title)_\(Date().formatted(date: .numeric, time: .omitted)).pdf")
+            }
+        }
+        .sheet(isPresented: $showingApprovalView) {
+            if let pdfData = pdfData {
+                ApprovalView(form: form, template: template, pdfData: pdfData)
             }
         }
     }
@@ -155,6 +175,18 @@ struct DynamicFormView: View {
         if let data = generator.generatePDF(from: form, template: template) {
             pdfData = data
             showingExportSheet = true
+        }
+    }
+
+    private func approveDocument() {
+        // First save the form
+        dataManager.save(form)
+
+        // Generate PDF
+        let generator = PDFGenerator()
+        if let data = generator.generatePDF(from: form, template: template) {
+            pdfData = data
+            showingApprovalView = true
         }
     }
 }

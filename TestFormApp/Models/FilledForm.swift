@@ -8,6 +8,14 @@
 import Foundation
 import SwiftData
 
+/// Approval status for forms in the workflow
+enum ApprovalStatus: String, Codable {
+    case draft = "Taslak"                   // Created by Müteahhit, not yet saved
+    case pendingMusavir = "Müşavir Bekliyor" // Saved by Müteahhit, waiting for Müşavir approval
+    case pendingIsveren = "İşVeren Bekliyor" // Approved by Müşavir, waiting for İşVeren approval
+    case approved = "Onaylandı"             // Fully approved by both Müşavir and İşVeren
+}
+
 /// A filled form instance
 @Model
 final class FilledForm {
@@ -21,6 +29,24 @@ final class FilledForm {
     var notesData: Data // JSON encoded [String]
     var attendeesData: Data // JSON encoded [Attendee]
 
+    // Approval workflow properties
+    var createdByUsername: String
+    var approvalStatusRawValue: String
+    var musavirApprovedBy: String?
+    var musavirApprovedDate: Date?
+    var isverenApprovedBy: String?
+    var isverenApprovedDate: Date?
+
+    /// Computed property for ApprovalStatus
+    var approvalStatus: ApprovalStatus {
+        get {
+            ApprovalStatus(rawValue: approvalStatusRawValue) ?? .draft
+        }
+        set {
+            approvalStatusRawValue = newValue.rawValue
+        }
+    }
+
     init(
         id: UUID = UUID(),
         templateId: String,
@@ -30,12 +56,16 @@ final class FilledForm {
         checklistResponses: [String: ChecklistResponse] = [:],
         issues: [IssueLog] = [],
         notes: [String] = [],
-        attendees: [Attendee] = []
+        attendees: [Attendee] = [],
+        createdByUsername: String = "",
+        approvalStatus: ApprovalStatus = .draft
     ) {
         self.id = id
         self.templateId = templateId
         self.createdDate = createdDate
         self.lastModified = lastModified
+        self.createdByUsername = createdByUsername
+        self.approvalStatusRawValue = approvalStatus.rawValue
 
         // Encode initial data
         self.equipmentInfoData = (try? JSONEncoder().encode(equipmentInfo)) ?? Data()

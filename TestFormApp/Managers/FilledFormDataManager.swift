@@ -121,4 +121,58 @@ class FilledFormDataManager: ObservableObject {
             errorMessage = "Toplu silme hatası: \(error.localizedDescription)"
         }
     }
+
+    // MARK: - Role-based filtering methods
+
+    /// Get forms created by a specific user (for Müteahhit to see their own forms)
+    func getMyForms(username: String) -> [FilledForm] {
+        filledForms.filter { $0.createdByUsername == username }
+    }
+
+    /// Get forms pending Müşavir approval (for Müşavir role)
+    func getFormsForMusavirApproval() -> [FilledForm] {
+        filledForms.filter { $0.approvalStatus == .pendingMusavir }
+    }
+
+    /// Get forms pending İşVeren approval (for İşVeren role)
+    func getFormsForIsverenApproval() -> [FilledForm] {
+        filledForms.filter { $0.approvalStatus == .pendingIsveren }
+    }
+
+    /// Get fully approved forms
+    func getApprovedForms() -> [FilledForm] {
+        filledForms.filter { $0.approvalStatus == .approved }
+    }
+
+    /// Get approved forms by category
+    func getApprovedForms(category: String) -> [FilledForm] {
+        // We'll need template manager to filter by category
+        getApprovedForms()
+    }
+
+    /// Approve form as Müşavir
+    func approveAsMusavir(_ form: FilledForm, approvedBy: String) {
+        guard form.approvalStatus == .pendingMusavir else { return }
+
+        form.musavirApprovedBy = approvedBy
+        form.musavirApprovedDate = Date()
+        form.approvalStatus = .pendingIsveren
+        update(form)
+    }
+
+    /// Approve form as İşVeren
+    func approveAsIsveren(_ form: FilledForm, approvedBy: String) {
+        guard form.approvalStatus == .pendingIsveren else { return }
+
+        form.isverenApprovedBy = approvedBy
+        form.isverenApprovedDate = Date()
+        form.approvalStatus = .approved
+        update(form)
+    }
+
+    /// Submit form for approval (Müteahhit saves and submits)
+    func submitForApproval(_ form: FilledForm) {
+        form.approvalStatus = .pendingMusavir
+        update(form)
+    }
 }

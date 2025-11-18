@@ -17,9 +17,9 @@ struct TestFormApp: App {
     let modelContainer: ModelContainer
 
     init() {
-        // Configure SwiftData
+        // Configure SwiftData with both FilledForm and User models
         do {
-            let schema = Schema([FilledForm.self])
+            let schema = Schema([FilledForm.self, User.self])
             let modelConfiguration = ModelConfiguration(
                 schema: schema,
                 isStoredInMemoryOnly: false
@@ -38,6 +38,7 @@ struct TestFormApp: App {
             ContentView()
                 .environmentObject(templateManager)
                 .environmentObject(createDataManager())
+                .environmentObject(createUserManager())
                 .modelContainer(modelContainer)
         }
     }
@@ -46,5 +47,11 @@ struct TestFormApp: App {
         let manager = FilledFormDataManager()
         manager.setup(container: modelContainer)
         return manager
+    }
+
+    @MainActor
+    private func createUserManager() -> UserManager {
+        let context = ModelContext(modelContainer)
+        return UserManager(modelContext: context)
     }
 }

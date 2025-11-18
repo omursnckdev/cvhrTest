@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DynamicFormView: View {
     @EnvironmentObject var dataManager: FilledFormDataManager
+    @EnvironmentObject var userManager: UserManager
 
     let form: FilledForm
     let template: FormTemplate
@@ -16,6 +17,7 @@ struct DynamicFormView: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var showingSaveAlert = false
+    @State private var showingSubmitConfirmation = false
     @State private var showingExportSheet = false
     @State private var pdfData: Data?
 
@@ -76,10 +78,22 @@ struct DynamicFormView: View {
 
             ToolbarItem(placement: .primaryAction) {
                 Menu {
-                    Button {
-                        saveForm()
-                    } label: {
-                        Label("Kaydet", systemImage: "square.and.arrow.down")
+                    // Save as draft (Müteahhit only)
+                    if userManager.currentUser?.role == .muteahhit {
+                        Button {
+                            saveForm()
+                        } label: {
+                            Label("Kaydet", systemImage: "square.and.arrow.down")
+                        }
+
+                        // Submit for approval button
+                        if !isNew && form.approvalStatus == .draft {
+                            Button {
+                                showingSubmitConfirmation = true
+                            } label: {
+                                Label("Onaya Gönder", systemImage: "paperplane")
+                            }
+                        }
                     }
 
                     Button {
@@ -98,6 +112,14 @@ struct DynamicFormView: View {
                     dismiss()
                 }
             }
+        }
+        .alert("Onaya Gönder", isPresented: $showingSubmitConfirmation) {
+            Button("İptal", role: .cancel) { }
+            Button("Gönder", role: .destructive) {
+                submitForApproval()
+            }
+        } message: {
+            Text("Formu onaya göndermek istediğinizden emin misiniz? Gönderildikten sonra Müşavir tarafından incelenecektir.")
         }
         .sheet(isPresented: $showingExportSheet) {
             if let pdfData = pdfData {
@@ -146,8 +168,17 @@ struct DynamicFormView: View {
     }
 
     private func saveForm() {
+        // Set creator username if this is a new form
+        if isNew, let username = userManager.currentUser?.username {
+            form.createdByUsername = username
+        }
         dataManager.save(form)
         showingSaveAlert = true
+    }
+
+    private func submitForApproval() {
+        dataManager.submitForApproval(form)
+        dismiss()
     }
 
     private func exportToPDF() {
